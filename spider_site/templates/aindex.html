@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <meta name="keyword" content="Scrapy Spider">
+    <meta name="author" content="Richard Lee">
+    <meta name="digest" content="">
+    <link rel="stylesheet" type="text/css" href="">
+</head>
+<body>
+<h1  style="text-align:center;">Github</h1>
+<h3><a href="{% url 'MySpider:edit' 0 %}">添加新项目</a></h3>
+<ul>
+{% for git in Githubs %}
+<li><h2><a href="{% url 'MySpider:ArticlePage' git.id %}">{{ git.Item }}</a></h2></li>
+<p>{{ git.Content }}</p>
+{% endfor %}
+</ul>
+</body>
+</html>
+<!-- last update: 2018-6-6 -->

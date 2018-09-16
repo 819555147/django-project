@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>登录</title>
+    <meta name="keyword" content="Scrapy Spider">
+    <meta name="author" content="Richard Lee">
+    <meta name="digest" content="">
+    <link rel="stylesheet" type="text/css" href="">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+<body>
+<div class="nav">
+    <div class="icon" onclick="$('.dialog').fadeToggle(800);">
+        <img src="{% static 'images/icon.png' %}" alt="Error"/>
+    </div>
+    <div class="dialog">
+        <img src="{% static 'images/qipao.png' %}" alt="Error">
+        <p>Welcome to my website!</p>
+    </div>
+    <div class="nav-item">
+        <ul>
+            <li><a href="">合作</a></li>
+            <li><a href="">团队</a></li>
+            <li><a href="">交流</a></li>
+            <li><a href="{% url 'FirstSite:blog' %}" target="_blank">个站</a></li>
+        </ul>
+    </div>
+</div>
+<div class="main-container">
+    <h1>登录表单</h1>
+    <div class="form-container">
+        <form action="{% url 'Entry:validate' %}" method="POST">
+            {% csrf_token %}
+            <!--防跨站表单攻击-->
+            <span class="error-info" style="{{ style }}">{{ info }}</span>
+            <ul>
+                <li style="height:20px;margin:0;">
+                    <input type="hidden" name="hidden-value"><!-- 带上点东西IP？ -->
+                </li>
+                <li>
+                    <input type="text" name="username" required="required">
+                    <label alt="请输入用户名" placeholder="用户名"></label>
+                </li>
+                <li>
+                    <input type="password" name="password" required="required">
+                    <label alt="请输入密码" placeholder="密码"></label>
+                </li>
+                <li><button>提 交</button></li>
+            </ul>
+        </form>
+    </div>
+</div>
+<div class="footer">
+    <span>All Rights Reserved<br/> Lovely Crafted & Designed By <strong style="font-size:20px;">☞</strong> <a href="mailto:LeeYunHow@gmail.com">李云浩</a></span>
+</div>
+
+<script src="{% static 'js/jquery.min.js' %}"></script>
+</body>
+</html>

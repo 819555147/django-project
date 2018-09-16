@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <meta name="keyword" content="Scrapy Spider">
+    <meta name="author" content="Richard Lee">
+    <meta name="digest" content="">
+    <link rel="stylesheet" type="text/css" href="">
+    <title>爬虫</title>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+</head>
+<body>
+<div class="overlay">
+    <div class="nav">
+        <div class="icon"  onclick="$('.dialog').fadeToggle(800);">
+            <img src="{% static 'images/icon.png' %}" title=""/>
+        </div>
+        <div class="dialog">
+            <img src="{% static 'images/qipao.png' %}" alt="Error">
+            <p>Welcome to my website!</p>
+        </div>
+
+        <div class="nav-item">
+            <ul>
+                <li><a href="{% url 'Entry:logout' %}">注销</a></li>
+                <li><a href="">合作</a></li>
+                <li><a href="">团队</a></li>
+                <li><a href="{% url 'FirstSite:blog' %}" target="_blank">个站</a></li>
+            </ul>
+        </div><!-- end nav-item -->
+    </div><!-- end nav -->
+    <div class="banner-container"></div>
+    <div class="motto">
+        <br/>Catch the Dream<br/>Crawling the Future<br/>
+        <span class="to_spider"><a href="#spider">Crawl</a></span>
+    </div>
+
+</div><!-- end overlay -->
+<div class="main-container">
+    <div class="home-content">
+        <div class="home-item-intro">
+            <ul>
+                <li>
+                    <div>
+                        <div class="img-container"><img src="{% static 'images/team.png' %}" alt=""/></div>
+                        <h4>团队</h4>
+                        <p>暂无团队信息，如果你对这个项目感兴趣，欢迎加入我们!</p>
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <div class="img-container"><img src="{% static 'images/range.png' %}" alt=""/></div>
+                        <h4>采集范围</h4>
+                        <p>采集范围比较杂，从娱乐信息到学术信息都有涉猎，但是最主要的采集对象是和程序猿有关的内容。</p>
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <div class="img-container"><img src="{% static 'images/direction.png' %}" alt=""/></div>
+                        <h4>发展方向</h4>
+                        <p>关于该爬虫系统的发展方向：基于兴趣写的网站，所以会在今后不断增加功能模块。</p>
+                    </div>
+                </li>
+            </ul>
+            <div class="clear"></div>
+        </div><!-- end home-item-intro -->
+        <div class="home-item-model">
+            <div class="team"><h2>Events</h2></div>
+            <ul>
+                <li><a href="">
+                    <span>模块一</span>
+                </a></li>
+                <li><a href="">
+                    <span>模块二</span>
+                </a></li>
+                <li><a href="">
+                    <span>模块三</span>
+                </a></li>
+                <li><a href="">
+                    <span>模块四</span>
+                </a></li>
+                <li><a href="">
+                    <span>模块五</span>
+                </a></li>
+                <li><a href="">
+                    <span>模块六</span>
+                </a></li>
+                <li><a href="">
+                    <span>模块七</span>
+                </a></li>
+                <li><a href="">
+                    <span>模块八</span>
+                </a></li>
+            </ul>
+            <script>
+            $(document).ready(function() {
+                var Ul = $(".home-item-model ul");
+                var timer;
+                new GOGOGO().Start();
+                Ul.hover(function() {
+                    clearInterval(timer);
+                }, function() {
+                    new GOGOGO().Start();
+                })
+
+                function GOGOGO() {
+                    this.Start = function() {
+                        if (Ul.children().length < this.maxLength) {
+                            Ul.append(Ul.children().clone());
+                        }
+                        timer = setInterval(timery, 2000);
+                        if (Ul.children().length < 3) {
+                            clearInterval(timer);
+                        }
+                    }
+                    timery = function() {
+                        var img = Ul.children().eq(0);
+                        var left = img.children().eq(0).width();
+                        img.animate({
+                            "marginLeft": (-1 * left) + "px",
+                        }, 1000, function() {
+                            $(this).css("margin", "0 18px").css("display", "inline-block").appendTo(Ul);
+                        });
+                    }
+                }
+            });
+            </script>
+        </div><!-- end home-item-model -->
+    </div><!-- end home-content -->
+
+    <div class="description">
+        <div class="img-container"><img src="{% static 'images/logo.jpg' %}"></div>
+        <div class="content">
+            <h2>一段话</h2>
+            <p>本网站基于兴趣爱好搭建，主要分享和交流数据挖掘的心得。君不见，黄河之水天上来⑵，奔流到海不复回。
+君不见，高堂明镜悲白发，朝如青丝暮成雪⑶。
+人生得意须尽欢⑷，莫使金樽空对月。
+天生我材必有用，千金散尽还复来。
+烹羊宰牛且为乐，会须一饮三百杯⑸。
+岑夫子，丹丘生⑹，将进酒，杯莫停⑺。
+与君歌一曲⑻，请君为我倾耳听⑼。
+钟鼓馔玉不足贵⑽，但愿长醉不复醒⑾。
+            君不见，黄河之水天上来⑵，奔流到海不复回。
+君不见，高堂明镜悲白发，朝如青丝暮成雪⑶。
+人生得意须尽欢⑷，莫使金樽空对月。
+天生我材必有用，千金散尽还复来。
+烹羊宰牛且为乐，会须一饮三百杯⑸。
+岑夫子，丹丘生⑹，将进酒，杯莫停⑺。
+与君歌一曲⑻，请君为我倾耳听⑼。
+钟鼓馔玉不足贵⑽，但愿长醉不复醒⑾。
+            </p>
+        </div>
+    </div><!-- a simple description for me-->
+
+    <div class="middle-img-container">
+    </div><!-- middle-img-container -->
+
+
+    <div class="spider-container">
+        <div class="spider">
+            <a name="spider"></a>
+            <h1 style="text-align:center;">Spider lays here with some demos</h1>
+            <h4 style="text-align:center;">you can click to see details</h4>
+            <ul class="chooser">
+                <li class="GitHub">
+                    <span><br/>GitHub</span>
+                </li>
+                <li class="StackOverflow">
+                    <span><br/>StackOverflow</span>
+                </li>
+                <li class="SegmentFault">
+                    <span><br/>SegmentFault</span>
+                </li>
+                <li class="ZhiHu">
+                    <span><br/>知乎</span>
+                </li>
+                <li class="BaiDu">
+                    <span><br/>百度热搜</span>
+                </li>
+                <li class="WeiBo">
+                    <span><br/>新浪微博</span>
+                </li>
+                <li class="DouBan">
+                    <span><br/>豆瓣电影排行</span>
+                </li>
+                <li class="SDU">
+                    <span><br/>SDU门户</span>
+                </li>
+                <li class="HuXiu">
+                   <span><br/>虎嗅网</span>
+                </li>
+                <li class="QiDian">
+                   <span><br/>起点中文网</span>
+                </li>
+                <li class="Pexels">
+                   <span><br/>Pexels</span>
+                </li>
+                <li class="Nothing">
+                   <span><br/>Nothing</span>
+                </li>
+
+            </ul>
+            <script>
+                $(function(){
+                    $('.chooser li').click(function(){
+                        var classname = $(this).attr("class");
+                        //alert(classname);
+                        var name = $.trim($(this).text());
+                        $('.float-windows h2 span').text(name);
+
+                        // 添加 <li></li>
+                        if(classname == "GitHub"){
+                            //do nothing
+                        }
+                        else if(classname == 'StackOverFlow'){
+                            //do nothing
+                        }
+                        else if(classname == 'SegmentFault'){
+                            //do nothing
+                            $("li.bt").empty();
+                            $("li.bt").append('<button class="full_site" onclick="return $ban1();">全站</button>\
+                        <button class="real_time" onclick="return $ban2();">实时</button>');
+                        }
+                        else if(classname == 'ZhiHu'){
+                            alert(classname + '暂未完成');
+                        }
+                        else if(classname == 'BaiDu'){
+                            ////do nothing
+                        }
+                        else if(classname == 'WeiBo'){
+                            alert(classname + '暂未完成');
+                        }
+                        else if(classname == 'DouBan'){
+                            // do what?
+                        }
+                        else if(classname == 'HuXiu'){
+                             $new_li = '<li class="append"><label>\
+                            <input type="checkbox" name="crawl_target_content" value="2" checked="checked"> 文本\
+                            </label></li>';
+                            $('.float-windows form ul li.bt').before($new_li);
+                        }
+                        else if(classname == 'QiDian'){
+                            $new_li = '<li class="append"><label>\
+                            <input type="checkbox" name="crawl_target_content" value="2" checked="checked"> 文本\
+                            </label></li>';
+                            $('.float-windows form ul li.bt').before($new_li);
+                        }
+                        else if(classname == 'Pexels'){
+                            $new_li = '<li class="append"><label>\
+                                <input type="checkbox" name="crawl_target_content" value="3" checked="checked"> 图片\
+                            </label></li>'
+                            $('.float-windows form ul li.bt').before($new_li);
+
+                            $new_input = '<div class="append nums"><label><span>图片数量：</span>\
+                                <input type="number" name="crawl_target_photos_num" required="required" max="100" min="10">\
+                            </label></div>';
+                            $('.float-windows form ul li.bt').before($new_input);
+
+                            $new_input = '<div class="append photos"><label><span>想要爬的图片：</span>\
+                                <input type="text" name="crawl_target_photos" required="required">\
+                            </label></div>';
+                            $('.float-windows form ul li.bt').before($new_input);
+                        }
+                        else{
+                            //alert('尚未添加');
+                        }
+
+
+                        $lis = $('.float-windows form ul li[class!="bt"]');
+                        //alert($lis.size());
+                        // 根据li的个数调整li的margin-left，从而使其对齐
+                        if($lis.size() == 4)
+                           $lis.css("margin-left","45px");
+                        else if($lis.size() == 5)
+                            $lis.css("margin-left","28px");
+                        else if($lis.size() == 3)
+                            $lis.css("margin-left","70px");
+                        else  //2
+                            $lis.css("margin-left","105px");
+
+                        $('.chooser').slideUp(700);
+                        $('.float-windows').fadeIn(700);
+
+                        $('input[name="crawl_target"]').val(name);
+                    });
+
+                    $ban1 = function(){
+                        //更改爬取的name
+                        $("li.bt").empty();
+                        $("li.bt").append('<button class="submit">确定</button>\
+                        <button class="cancel"  onclick="return $cancel();">取消</button>');
+                        $('input[name="crawl_target"]').val("SegmentFault_Full");
+                    };
+                    $ban2 = function(){
+                        //更改爬取的name
+                        $("li.bt").empty();
+                        $("li.bt").append('<button class="submit">确定</button>\
+                        <button class="cancel"  onclick="return $cancel();">取消</button>');
+                    };
+
+                    $cancel = function(){
+                        $('.float-windows').fadeOut(700);
+                        $('.chooser').slideDown(500);
+                        $('input[name="crawl_target"]').val("");
+                        $('.float-windows form ul .append').remove();
+                        return false;
+                    };
+
+                    $('button.cancel').click($cancel);
+                });
+            </script>
+        </div><!-- end spider -->
+        <div class="float-windows">
+            <h2>Crawl <span>Nothing</span></h2>
+            <form action="{% url 'MySpider:spiderRun'%}" method="post">
+            {% csrf_token %}
+                <ul>
+                    <!-- value 0:标题 1:链接 2:文本 3:图片 4:视频 5:相关 (其中0 1 5必选)-->
+                    <li>
+                        <label>
+                            <input type="checkbox" name="crawl_target_content" value="0" checked="checked"> 标题
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="checkbox" name="crawl_target_content" value="1" checked="checked"> 链接
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="checkbox" name="crawl_target_content" value="5" checked="checked"> 相关
+                        </label>
+                    </li>
+                    <!--
+
+                    <li class="append">
+                        <label>
+                            <input type="checkbox" name="crawl_target_content" value="4" checked="checked"> 视频
+                        </label>
+                    </li>-->
+                    <input type="hidden" name="crawl_target"/>
+                    <li class="bt">
+                        <button class="submit">确 定</button>
+                        <button class="cancel">取 消</button>
+                    </li>
+                </ul>
+            </form>
+        </div><!-- end float-windows -->
+    </div><!-- end spider-container -->
+
+</div><!-- end main-container -->
+
+<div class="footer">
+    <span><br/>All Rights Reserved<br/> Lovely Craft & Design By <strong style="font-size:20px;">☞</strong>
+        <a href="mailto:819555147@qq.com">李云浩</a>
+    </span>
+</div>
+<div class="gettop">
+    <img src="{% static 'images/gettop.png' %}"/>
+    <span>Get Top</span>
+</div>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>思否全站导航</title>
+    <style>
+        table {
+            width:80%;
+            margin:auto;
+        }
+        h2 {
+            text-align:center;
+        }
+    </style>
+</head>
+<body>
+    <h2><a href="{% url 'MySpider:index' %}#spider">回到爬虫</a> <button onclick="location.reload();">刷新</button></h2>
+
+    <table border="1">
+        <caption>思否全站内容，目前共{{ len }}条，仅显示{{ num }}条</caption>
+        <tr>
+            <th>标题</th>
+            <th>作者</th>
+            <th>发布时间</th>
+            <th>标签</th>
+        </tr>
+        {% for sf in data %}
+        <tr>
+            <td><a href="{{sf.title_url}}">{{sf.title}}</a></td>
+            <td><a href="{{sf.author_link}}">{{sf.author}}</a></td>
+            <td>{{sf.createdDate}}</td>
+            <td>{{sf.tags}}</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+</body>
+</html>

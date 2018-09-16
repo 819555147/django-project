@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>虎嗅</title>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script>
+        $().ready(function(){
+            //do something
+            $("body").append('{{html|safe}}');
+        })
+
+    </script>
+    <style>
+        
+
+    </style>
+</head>
+<body>
+    <a href="{% url 'MySpider:index' %}">返回爬虫首页</a>
+</body>
+</html>

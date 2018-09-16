@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>图片获取</title>
+    <style>
+        *{
+            padding:0;
+            margin:0;
+        }
+        .message_window {
+            width:170px;
+            margin:20px;
+            background:#2b2b2b;
+            color:#fff;
+            position:fixed;
+            left:calc(50% - 110px);
+            top:100px;
+            padding:10px;
+            border-radius:10px;
+        }
+        .message_window a {
+            color:#fff;
+
+        }
+        .message_window label span {
+            color:#cc7832;
+        }
+        .message_window:hover{
+            z-index:100;
+            box-shadow:10px 10px 10px #000;
+        }
+        .result {
+            margin:40px;
+        }
+        #img {
+            width:990px;
+            height:800px;
+            margin:50px auto;
+            perspective:700px;
+            -webkit-perspective:700px;
+        }
+        #img img {
+            width:100px;
+            float:left;
+            padding: 5px;
+            border-radius:10px;
+        }
+        #btn, #more, #back {
+            width:120px;
+            height:40px;
+            line-height:40px;
+            text-align:center;
+            font-size:16px;
+            color: #fff;
+            font-size: 17px;
+            font-weight: 700;
+            background:#1fb3ef;
+            border-radius:5px;
+            margin:20px auto;
+            padding:5px 5px;
+            cursor:pointer;
+        }
+        #show_photos, #download {
+            text-align:center;
+            width:140px;
+            height:35px;
+            background: #1fb3ef;
+            color: #fff;
+            font-size: 17px;
+            font-weight: 700;
+            border: none;
+            border-radius: 4px;
+            margin:10px auto 0 auto;
+            cursor: pointer;
+            padding:10px 10px 5px 10px;
+            line-height:16px;
+        }
+        #download{
+            width:100px;
+            font-size:16px;
+            padding:7px 2px 2px 2px;
+            line-height:16px;
+        }
+        span.img_div {
+            float:left;
+        }
+        span.img_div input[type="checkbox"] {
+            margin-top:10px;
+        }
+        button.All, button.None {
+            width:60px;
+            line-height:25px;
+            text-align:center;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 700;
+            background:#1fb3ef;
+            border-radius:10px;
+            cursor:pointer;
+            margin:10px auto;
+            display:block;
+        }
+
+    </style>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+</head>
+<body>
+        <div class="message_window">
+            <h2>为你爬取到了：</h2>
+            <ul style="list-style:none;">
+                <li>
+                    <label>关于<span>{{ photos }}</span>的图片</label>
+                </li>
+                <li>
+                    <label>共<span>{{ nums }}</span>张图片</label>
+                </li>
+                <li class="return" style="display:none;">
+                    <a href="{% url 'MySpider:index' %}#spider">返回首页</a>
+                </li>
+            </ul>
+        <button class="All" style="display:none;">全选</button>
+        <button class="None" style="display:none;">全不选</button>
+        <script>
+            document.querySelector("button.All").onclick = function(){
+                var cblist = document.querySelectorAll("input[type='checkbox']")
+                for(var i=0;i<cblist.length;i++)
+                {
+                    cblist[i].checked = true;
+                }
+                $("button.All").hide();
+                $("button.None").show();
+            }
+            document.querySelector("button.None").onclick = function(){
+                var cblist = document.querySelectorAll("input[type='checkbox']")
+                for(var i =0;i< cblist.length;i++)
+                {
+                    cblist[i].checked = false;
+                }
+                $("button.None").hide();
+                $("button.All").show();
+            }
+        </script>
+            <div id="show_photos">显示部分缩略图<br/>&darr;</div>
+            <div id="download" style="display:none;">下载到本地<br/>&darr;</div>
+            <script>
+                  var btn = document.getElementById('download');
+                  //将要进行下载的mp3文件地址，以组数的形式存起来
+                  var mp3arr = [];
+                  {% for img in imgs %}
+                      var path = "{% static img %}".replace("thumbnail", "full");
+                      mp3arr.push(path);
+                  {% endfor %}
+                  //alert(mp3arr);
+                  function download(name, href) {
+                      var a = document.createElement("a"), //创建a标签
+                      e = document.createEvent("MouseEvents"); //创建鼠标事件对象
+                      e.initEvent("click", false, false); //初始化事件对象
+                      a.href = href; //设置下载地址
+                      a.download = name; //设置下载文件名
+                      a.dispatchEvent(e); //给指定的元素，执行事件click事件
+                  }
+
+                  //给多文件下载按钮添加点击事件
+                  btn.onclick = function name(params) {
+                      lis = document.querySelectorAll('#img span.img_div');
+                      for (let index = 0; index < mp3arr.length; index++) {
+                          //alert(lis[index].childNodes[1].checked);
+                          if(lis[index].childNodes[1].checked==true)
+                              download('第' + (index+1) + '张图片.jpg', mp3arr[index]);
+                      }
+                  }
+
+            </script>
+        </div>
+
+        <script>
+            $('#show_photos').click(function(){
+                $('.result').slideDown(500);
+                $(this).slideUp(500);
+                $('#download').slideDown(500);
+                $(".message_window").css({"left":"0", "top":"0", "transition":"2s"});
+                $("li.return").show(3000);
+                $('#btn').click();
+                $("button.All").show(1000);
+            });
+        </script>
+        <div class="result" style="display:none;">
+            <div id="more">换一批</div>
+            <div id="back" style="display:none;">上一批</div>
+            <div id="btn" style="display:none;"></div>
+            {% ifnotequal others_num 0 %}
+            <script>
+                $("#more").click(function(){
+                    //清空孩子
+                    var index = 1;
+                    $("#img").empty();
+                    {% if others %}
+                    {% for img in others %}
+                    $new_img = '<span class="img_div"><img src="{% static img %}" alt="图片未能显示"><input type="checkbox"/></span>';
+                    $("#img").append($new_img);
+                    {% endfor %}
+                    {% endif %}
+                    $("#btn").click();
+                    $("#more").slideUp(500);
+                    $("#back").slideDown(500);
+                });
+                $("#back").click(function(){
+                    //清空孩子
+                    var index = 1;
+                    $("#img").empty();
+                    {% for img in imgs %}
+                    $new_img = '<span class="img_div"><img src="{% static img %}" alt="图片未能显示"><input type="checkbox"/></span>';
+                    $("#img").append($new_img);
+                    {% endfor %}
+                    $("#btn").click();
+                    $("#back").slideUp(500);
+                    $("#more").slideDown(500);
+                });
+            </script>
+            {% endifnotequal %}
+            <div id="img">
+                {% for img in imgs %}
+                <span class="img_div"><img src="{% static img %}" alt="图片未能显示"><input type="checkbox"/></span>
+                {% endfor %}
+            </div>
+            <script>
+                $("span.img_div").click(function(){
+                    //alert($(this).children()[1].checked);
+                    if($(this).children()[1].checked==false)
+                        $(this).children()[1].checked = true;
+                    else
+                        $(this).children()[1].checked = false
+                });
+
+            </script>
+
+            <script>
+                /*
+                    1.闪的效果（瞬间高度宽度变为0，scale,随机）
+                    2.图片由小变大，同时透明度由1-0
+                    3.图片旋转，同时透明度由0-1
+                */
+            window.onload = function() {
+                var btn = document.getElementById('btn');
+                var imgs = document.getElementsByTagName("img");
+                var on = true;
+
+                btn.onclick = function() {
+                    if (!on) {
+                        return;
+                    }
+                    on = false;
+                    var endNum = 0; //运动完成的图片数量
+                    for (var i = 0; i < imgs.length; i++) {
+                        (function(i) {
+                            setTimeout(function() {
+                                montion(imgs[i], '1s', function() {
+                                    this.style.transform = 'scale(0)';
+                                }, function() {
+                                    montion(this, "1s", function() {
+                                        this.style.transform = 'scale(1)';
+                                        this.style.opacity = '0';
+                                    }, function() {
+                                        endNum++;
+                                        if (endNum == imgs.length) {
+                                            toBig();
+                                        }
+                                    })
+                                })
+                            }, Math.random() * 1000);
+                        })(i)
+                    }
+
+
+                };
+
+                //第三个效果
+                function toBig() {
+                    /*
+                        坐标轴（X，Y,z）
+                    */
+                    var allEnd = 0;
+                    for (var i = 0; i < imgs.length; i++) {
+                        imgs[i].style.transition = "";
+                        imgs[i].style.transform = 'rotateY(0deg) translateZ(-' + Math.random() * 500 + 'px)';
+                        (function(i) {
+                            setTimeout(function() {
+                                montion(imgs[i], '2s', function() {
+                                    this.style.opacity = 1;
+                                    this.style.transform = 'rotateY(-360deg) translateZ(0)';
+                                }, function() {
+                                    allEnd++;
+                                    if (allEnd == imgs.length) {
+                                        on = true;
+                                    }
+                                });
+                            }, Math.random() * 1000);
+                        })(i)
+                    }
+                }
+
+                //运动函数（运动的对象，时间，属性函数，回调）
+                function montion(obj, time, doFn, callBack) {
+                    obj.style.transition = time;
+                    doFn.call(obj); //调用函数，并把this的指向给obj
+                    var called = false
+                    obj.addEventListener('transitionend', function() {
+                        if (!called) {
+                            callBack && callBack.call(obj);
+                            called = true;
+                        }
+                    }, false);
+                }
+            }
+            </script>
+        </div>
+</body>
+</html>

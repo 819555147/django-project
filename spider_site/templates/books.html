@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>起点</title>
+</head>
+    <style>
+        .bookshelf ul {margin:0;margin-top:5px;}
+        .bookshelf ul li {list-style:square;color:#fff;width:95%;}
+        h2 {
+            text-align:center;
+        }
+        .bookshelf {
+            width:80%;
+            margin:auto;
+            background:#2b2b2b;
+            color:#a9b7c6;
+            font-family:'宋体';
+            font-size:11pt;
+            border-radius:10px;
+        }
+        .bookshelf a {
+            color:#cc7832;
+            text-decoration:none;
+        }
+
+        .bookshelf li:hover {
+            background:#ffc66d;
+            color:#cc7832;;
+        }
+        .btn {
+            width:120px;
+            height:40px;
+            line-height:40px;
+            text-align:center;
+            font-size:16px;
+            color: #fff;
+            font-size: 17px;
+            font-weight: 700;
+            background:#1fb3ef;
+            border-radius:5px;
+            margin:20px auto;
+            padding:5px 5px;
+            cursor:pointer;
+        }
+        button {
+            width:60px;
+            line-height:25px;
+            text-align:center;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 700;
+            background:#1fb3ef;
+            border-radius:10px;
+            cursor:pointer;
+            margin-left:20px;
+            margin-top:10px;
+        }
+        span.back {
+            font-size:14px;
+        }
+        span.back a {
+            color:#fff;
+            text-align:center;
+            background:#000;
+            padding:1px;
+            letter-spacing:2px;
+        }
+        span.back a:hover {
+        }
+    </style>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+<body>
+<h2>书架<span class="back"><a href="{% url 'MySpider:index' %}#spider">返回</a></span></h2>
+    <div class="bookshelf">
+        <button class="All">全选</button>
+        <button class="None" style="display:none;">全不选</button>
+        <script>
+            document.querySelector("button.All").onclick = function(){
+                var cblist = document.querySelectorAll("input[type='checkbox']")
+                for(var i=0;i<cblist.length;i++)
+                {
+                    cblist[i].checked = true;
+                }
+                $("button.All").hide();
+                $("button.None").show();
+            }
+            document.querySelector("button.None").onclick = function(){
+                var cblist = document.querySelectorAll("input[type='checkbox']")
+                for(var i =0;i< cblist.length;i++)
+                {
+                    cblist[i].checked = false;
+                }
+                $("button.None").hide();
+                $("button.All").show();
+            }
+        </script>
+        <ul>
+            {% for book in books %}
+            <li>
+                <a>{{ book }}</a><input type="checkbox" value="{{book}}">
+            </li>
+            {% endfor %}
+            <script>
+                lis = document.querySelectorAll('.bookshelf ul li');
+                for(var i=0;i<lis.length;i++){
+                    //alert(lis[i]);
+                    lis[i].onclick = function(){
+                        //alert(this.childNodes[2].checked);
+                        if(this.childNodes[2].checked==true)
+                            this.childNodes[2].checked = false;
+                        else
+                            this.childNodes[2].checked = true;
+                    }
+                }
+
+            </script>
+        </ul>
+        <div class="btn" id="btn">下载到本地</div>
+        <script>
+              var btn = document.getElementById('btn');
+              //将要进行下载的mp3文件地址，以组数的形式存起来
+              var mp3arr = [];
+              {% for book in books %}
+                var path = "{{book}}";
+                mp3arr.push(path);
+              {% endfor %}
+              //alert(mp3arr);
+
+              function download(name, href) {
+                  var a = document.createElement("a"), //创建a标签
+                      e = document.createEvent("MouseEvents"); //创建鼠标事件对象
+                  e.initEvent("click", false, false); //初始化事件对象
+                  a.href = href; //设置下载地址
+                  a.download = name; //设置下载文件名
+                  a.dispatchEvent(e); //给指定的元素，执行事件click事件
+              }
+
+              //给多文件下载按钮添加点击事件
+              btn.onclick = function name(params) {
+                  var anyone = false;
+                  for (let index = 0; index < mp3arr.length; index++) {
+                      if(document.querySelector('input[value="'+ mp3arr[index] +'"]').checked == true)
+                      {
+                        download(mp3arr[index], "{% static 'books/' %}" + mp3arr[index]);
+                        anyone = true;
+                      }
+                  }
+                  if(!anyone)
+                  {
+                    alert('请至少选择一个小说');
+                  }
+              }
+
+        </script>
+    </div>
+
+</body>
+</html>

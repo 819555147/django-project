@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% for item in items %}
+<h1>
+    <a href="{% url 'MySpider:jump' item.id %}">{{ item.Item }}</a>
+</h1>
+<p>{{ item.Content }}</p>
+    {% endfor %}
+</body>
+</html>
