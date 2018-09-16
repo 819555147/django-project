@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>创作中心</title>
+    <link rel="stylesheet" href="{% static 'css/fs-nav.css' %}">
+    <!--导入富文本编辑器-->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link href="{% static 'dist/summernote.css' %}" rel="stylesheet"/>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'dist/summernote.js' %}"></script>
+    <script src="{% static 'dist/lang/summernote-zh-CN.js' %}"></script>    <!-- 中文-->
+
+    <style>
+        html,body,div,h2,textarea{
+		    padding:0;
+		    margin:0;
+    	}
+    	body {
+    	    height:540px;
+    	}
+        label {
+            display:block;
+            height:60px;
+        }
+        input.title{
+            height:30px;
+            width:250px;
+            border-radius:10px;
+        }
+        div#editor {
+            width:800px;
+            margin:auto;
+            height:auto;
+            position:absolute;
+            right:100px;
+        }
+        .author-info{
+            position:absolute;
+            left:70px;
+            top:100px;
+        }
+        #submit {
+            display:block;
+            position:absolute;
+            left:200px;
+            top:220px;
+            width:100px;
+            height:30px;
+        }
+        #delete {
+            display:block;
+            position:absolute;
+            left:95px;
+            top:220px;
+            width:100px;
+            height:30px;
+        }
+        button {
+            box-shadow:1px 1px 1px #000;
+        }
+        button#submit, button#delete {
+            cursor:pointer;
+            background:#1fb3ef;
+            letter-spacing:2px;
+            text-align:center;
+            border-bottom:1px solid #2d78f4;
+            color:#fff;
+            font-weight:bold;
+            outline:medium;
+            border-radius:1px;
+            border-size:border-box;
+            box-shadow:1px 5px 5px #000;
+        }
+
+    </style>
+
+</head>
+<body>
+    <!-- 导航 -->
+    <nav>
+        <span class="logo"><a href="{% url 'FirstSite:blog' %}">创作中心</a></span>
+        <ul>
+            <li><a>心得</a></li>
+            <li><a href="{% url 'FirstSite:project' %}">项目</a></li>
+            <li><a href="{% url 'MySpider:index' %}" target="_blank">爬虫</a></li>
+            <li><a href="{% url 'FirstSite:program' %}">编程</a></li>
+            <li><a href="{% url 'FirstSite:language' %}">语言</a></li>
+            <li><a href="{% url 'FirstSite:algorithm' %}">算法</a></li>
+        </ul>
+    </nav>
+    <div class="get_in_way"></div><!-- 占位div -->
+
+    <!-- 页面主体容器 -->
+    <form action="{% url 'FirstSite:process' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="main-container" style="height:auto;">
+                <div class="author-info">
+                    <label>标题：<br/>
+                        <input type="text" class="title" required="required" name="title" value="{% if article %}{% for a in article %}{{a.Title}}{% endfor %}{% endif %}">
+                    </label>
+                    <label>类别
+                        <select name="tag">
+                          <option value="algorithm">algorithm</option>
+                          <option value="language">language</option>
+                          <option value="program">program</option>
+                          <option value="project">project</option>
+                        </select>
+                        <script>
+                            {% if article %}
+                            {% for a in article %}
+                            value = "{{ a.Tag }}";
+                            {% endfor %}
+                            {% else %}
+                            value = "";
+                            {% endif %}
+                            $("select[name='tag'] option[value='"+value+"']").attr("selected",true);
+                        </script>
+                    </label>
+                </div>
+                <div id="editor">
+                    <textarea class="summernote" name="content" required="required">
+                        {% if article %}
+                        {% for a in article %}
+                        {{ a.Content|safe }}
+                        {% endfor %}
+                        {% endif %}
+                    </textarea>
+                </div>
+                <input type="hidden" name="old_title" value="{% if article %}{% for a in article %}{{a.Title}}{% endfor %}{% endif %}">
+                <button id="submit">
+                    提交
+                </button>
+                <!----summernote配置---->
+                <script>
+                $(function(){
+                    $('.summernote').summernote({
+                        height: 480,
+                        tabsize: 2,
+                        lang: 'zh-CN',
+                        focus: true
+                    });
+                });
+                </script>
+        </div>
+    </form>
+    <form action="{% url 'FirstSite:delete'%}" method="POST">
+        {% csrf_token %}
+        <!-- javascript:if(confirm('确定要删除？')){location='{% url 'FirstSite:delete' %}'} -->
+        <input type="hidden" name="delete_title" value=""/>
+        <script>
+            $("input[name='delete_title']").val($("input[name='title']").val());
+        </script>
+        <button id="delete" onclick="if(!confirm('确定要删除？')) return false;">删除</button>
+    </form>
+    <div class="clear"></div>
+
+</body>
+</html>

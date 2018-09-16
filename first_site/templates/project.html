@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>我的项目</title>
+    <link rel="stylesheet" href="{% static 'css/fs-nav.css' %}">
+    <style>
+    </style>
+</head>
+<body>
+    <!-- 导航 -->
+    <nav>
+        <span class="logo"><a href="{% url 'FirstSite:blog' %}">Richard Lee</a></span>
+        <ul>
+            <li><a>心得</a></li>
+            <li><a href="{% url 'FirstSite:project' %}">项目</a></li>
+            <li><a href="{% url 'MySpider:index' %}" target="_blank">爬虫</a></li>
+            <li><a href="{% url 'FirstSite:program' %}">编程</a></li>
+            <li><a href="{% url 'FirstSite:language' %}">语言</a></li>
+            <li><a href="{% url 'FirstSite:algorithm' %}">算法</a></li>
+        </ul>
+    </nav>
+    <div class="get_in_way"></div><!-- 占位div -->
+
+    <!-- 页面主体容器 -->
+    <div class="main-container">
+        <!-- 左容器 -->
+        <div class="left-container author-info-container">
+            <div class="author-info">
+                <img src="{% static 'images/direction.png' %}" alt="图片不见了"/>
+                <span class="name">李云浩</span>
+                <span class="links">Links:</span>
+                <ul>
+                    <li>
+                        <a href="">&#10168 GitHub</a>
+                    </li>
+                    <li>
+                        <a href="">&#10168 新浪微博账号</a>
+                    </li>
+                    <li>
+                        <a href="">&#10168 知乎</a>
+                    </li>
+                </ul>
+                <span class="notes">Notes:</span>
+                <ul style="display:none;">
+                    <li>第一篇***</li>
+                    <li>第二遍&&&</li>
+                    <li>这是个目录罢了</li>
+                </ul>
+            </div>
+        </div>
+        <!-- 右容器 -->
+        <div class="right-container">
+            {% for article in articles %}
+            <div class="rows">
+                <h1 class="title"> {{article.Title}} </h1>
+                {{ article.Content|safe }}
+                <time>{{ article.Time }}</time>
+            </div>
+            {% endfor %}
+            <!-- 页脚 -->
+            <footer>
+                <span>All Rights Reserved</span>
+                <span>Lovely Crafted & Design By <a href="mailto:819555147@qq.com">李云浩</a></span>
+            </footer>
+        </div>
+    </div>
+    <div class="clear"></div>
+
+</body>
+</html>
