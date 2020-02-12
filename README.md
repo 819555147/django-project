@@ -1,3 +1,1 @@
-# django-project
-
-My web site base on django.
+简介。
